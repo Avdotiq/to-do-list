@@ -2,7 +2,7 @@
     <header>
         <h2>{{ name }}'s Tasks</h2>
         <menu>
-            <button>Add Task</button>
+            <button (click)="onStartAddTask()">Add Task</button>
         </menu>
     </header>
     <ul>
@@ -13,3 +13,7 @@
         }        
     </ul>
 </section>
+@if (isAddingTask) {
+    <app-new-task (cancel)="onCancelNewTask()" (add)="onAddTask($event)"></app-new-task>
+}
+
