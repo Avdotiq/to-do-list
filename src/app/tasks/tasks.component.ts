@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TaskComponent } from './task/task.component';
 import { NewTaskComponent } from './new-task/new-task.component';
-import { type NewTaskData } from './task/task.model';
+import { TasksService } from './tasks.service';
 
 @Component({
   selector: 'app-tasks',
@@ -16,58 +16,21 @@ export class TasksComponent {
   @Output() select = new EventEmitter<string>();
   isAddingTask = false;
 
+  constructor(private tasksService: TasksService) {}
+
   onSelectUser() {
     this.select.emit(this.name);
   }
 
-  tasks = [
-    {
-      id: 't1',
-      userId: 'u3',
-      title: 'Master Angular',
-      summary: 'Do somrthing',
-      dueDate: '2025-12-31',
-    },
-    {
-      id: 't2',
-      userId: 'u3',
-      title: 'Master Angular',
-      summary: 'Do somrthing',
-      dueDate: '2025-12-31',
-    },
-    {
-      id: 't3',
-      userId: 'u3',
-      title: 'Master Angular',
-      summary: 'Do somrthing',
-      dueDate: '2025-12-31',
-    },
-  ];
-
   get selectedUserTasks() {
-    return this.tasks.filter((task) => task.userId === this.userId);
-  }
-
-  onCompleteTask(id: string) {
-    this.tasks = this.tasks.filter((task) => task.id !== id);
+    return this.tasksService.getUserTasks(this.userId);
   }
 
   onStartAddTask() {
     this.isAddingTask = true;
   }
 
-  onCancelNewTask() {
-    this.isAddingTask = false;
-  }
-
-  onAddTask(taskData: NewTaskData) {
-    this.tasks.push({
-      id: new Date().getTime().toString(),
-      userId: this.userId,
-      title: taskData.title,
-      summary: taskData.summary,
-      dueDate: taskData.dueDate
-    })
+  onCloseNewTask() {
     this.isAddingTask = false;
   }
 }
